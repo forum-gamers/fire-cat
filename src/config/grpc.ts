@@ -1,8 +1,8 @@
-import { type ClientOptions, Transport } from '@nestjs/microservices';
+import { type GrpcOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { readdirSync } from 'fs';
 
-export const grpcClientOptions: ClientOptions = {
+export const grpcClientOptions: GrpcOptions = {
   transport: Transport.GRPC,
   options: {
     package: ['user'],

@@ -53,10 +53,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          len: {
-            args: [8, 16],
-            msg: 'password minimum characters are 8',
-          },
           notNull: {
             msg: 'password is required',
           },

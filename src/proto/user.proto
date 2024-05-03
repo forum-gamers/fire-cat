@@ -10,13 +10,13 @@ message User {
   string password = 5;
   bool isVerified = 6;
   string bio = 7;
-  string image_url = 8;
-  string image_id = 9;
-  string background_url = 10;
-  string background_id = 11;
+  string imageUrl = 8;
+  string imageId = 9;
+  string backgroundImageUrl = 10;
+  string backgroundImageId = 11;
   string status = 12;
-  string created_at = 13;
-  string updated_at = 14;
+  string createdAt = 13;
+  string updatedAt = 14;
 }
 
 message UserDatas {
@@ -37,10 +37,19 @@ message UserParams {
   string id = 1;
 }
 
+message RegisterInput {
+  string fullname = 1;
+  string username = 2;
+  string email = 3;
+  string password = 4;
+  string role = 5;
+  string confirmPassword = 6;
+}
 
 service UserService {
   rpc GetMultipleUser(MultipleUserParams) returns (UserDatas) {}
   rpc Me(NoArguments) returns (UserData) {}
   rpc GetFollowingRecomendation(NoArguments) returns (UserDatas) {}
   rpc GetUserById(UserParams) returns (UserData) {}
+  rpc Register(RegisterInput) returns (UserData) {}
 }
