@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { UserService } from '../modules/user/user.service';
 import { USERSERVICE } from '../constants/user.constants';
@@ -10,6 +10,8 @@ import { Sequelize } from 'sequelize-typescript';
 import { CoachService } from '../modules/coach/coach.service';
 import encryption from '../helpers/encryption';
 import jwt from '../helpers/jwt';
+import global from '../helpers/global';
+import { AuthenticationInterceptor } from '../middlewares/authentication.middleware';
 
 @Controller()
 export class UserController {
@@ -67,7 +69,6 @@ export class UserController {
           fullname: user.fullname,
           username: user.username,
           email: user.email,
-          password: '',
           isVerified: user.isVerified,
           bio: user.bio,
           imageUrl: user.imageUrl,
@@ -104,5 +105,12 @@ export class UserController {
     return {
       token: jwt.createToken({ id: user.id, accountType: as }),
     };
+  }
+
+  //@ts-ignore
+  @GrpcMethod(USERSERVICE, UserServiceMethod.Me)
+  @UseInterceptors(AuthenticationInterceptor)
+  public me(_: any, metadata: Metadata) {
+    return { data: global.getUserFromMetadata(metadata) };
   }
 }

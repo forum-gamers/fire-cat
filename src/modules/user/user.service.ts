@@ -5,6 +5,9 @@ import { Op, type CreateOptions } from 'sequelize';
 import type { CreateUserProps } from './user.interface';
 import { v4 } from 'uuid';
 import encryption from '../../helpers/encryption';
+import type { AccountType } from '../../interfaces/global.interface';
+import { Admin } from '../../models/admin';
+import { Coach } from '../../models/coach';
 
 @Injectable()
 export class UserService {
@@ -44,5 +47,12 @@ export class UserService {
 
   public async findByEmail(email: string) {
     return await this.userModel.findOne({ where: { email } });
+  }
+
+  public async findByIdAndPreload(id: string, accountType: AccountType) {
+    return await this.userModel.findOne({
+      where: { id },
+      include: [accountType === 'Admin' ? { model: Admin } : { model: Coach }],
+    });
   }
 }

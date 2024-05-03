@@ -7,16 +7,15 @@ message User {
   string fullname = 2;
   string username = 3;
   string email = 4;
-  string password = 5;
-  bool isVerified = 6;
-  string bio = 7;
-  string imageUrl = 8;
-  string imageId = 9;
-  string backgroundImageUrl = 10;
-  string backgroundImageId = 11;
-  string status = 12;
-  string createdAt = 13;
-  string updatedAt = 14;
+  bool isVerified = 5;
+  string bio = 6;
+  string imageUrl = 7;
+  string imageId = 8;
+  string backgroundImageUrl = 9;
+  string backgroundImageId = 10;
+  string status = 11;
+  string createdAt = 12;
+  string updatedAt = 13;
 }
 
 message UserDatas {
