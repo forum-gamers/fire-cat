@@ -1,6 +1,6 @@
 import { BaseValidation } from '../../base/validation.base';
 import { Injectable } from '@nestjs/common';
-import type { RegisterInputProps } from './user.interface';
+import type { LoginInputProps, RegisterInputProps } from './user.interface';
 import * as yup from 'yup';
 import { ACCOUNTTYPE } from '../../constants/global.constant';
 
@@ -32,6 +32,19 @@ export class UserValidation extends BaseValidation {
           'password and confirm password must equal',
           ({ password, confirmPassword }) => confirmPassword === password,
         ),
+      data,
+    );
+
+  public validateLogin = async (data: any) =>
+    await this.validate<LoginInputProps>(
+      yup.object().shape({
+        email: yup
+          .string()
+          .email('invalid email format')
+          .required('email is required'),
+        password: yup.string().required('password is required'),
+        as: yup.string().oneOf(ACCOUNTTYPE, 'invalid account type').optional(),
+      }),
       data,
     );
 }

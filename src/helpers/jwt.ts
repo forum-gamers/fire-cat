@@ -5,12 +5,16 @@ import {
   verify,
   decode,
   type DecodeOptions,
+  sign,
+  type SignOptions,
 } from 'jsonwebtoken';
 import type { AccountType } from '../interfaces/global.interface';
 
-export interface JwtValue extends JwtPayload {
-  UUID: string;
-  AccountType: AccountType;
+export type JwtValue = JwtPayload & TokenValue;
+
+export interface TokenValue {
+  id: string;
+  accountType: AccountType;
 }
 
 class Jwt {
@@ -27,6 +31,10 @@ class Jwt {
 
   public decodeToken(token: string, opts?: DecodeOptions) {
     return decode(token, opts) as JwtValue;
+  }
+
+  public createToken(data: TokenValue, opts?: SignOptions) {
+    return sign(data, process.env.SECRET, opts);
   }
 }
 

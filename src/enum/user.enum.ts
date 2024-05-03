@@ -4,4 +4,5 @@ export enum UserServiceMethod {
   GetFollowingRecomendation = 'GetFollowingRecomendation',
   GetUserById = 'GetUserById',
   Register = 'Register',
+  Login = 'Login',
 }

@@ -37,6 +37,15 @@ message UserParams {
   string id = 1;
 }
 
+message LoginInput {
+  string email = 1;
+  string password = 2;
+}
+
+message TokenResponse {
+  string token = 1;
+}
+
 message RegisterInput {
   string fullname = 1;
   string username = 2;
@@ -52,4 +61,5 @@ service UserService {
   rpc GetFollowingRecomendation(NoArguments) returns (UserDatas) {}
   rpc GetUserById(UserParams) returns (UserData) {}
   rpc Register(RegisterInput) returns (UserData) {}
+  rpc Login(LoginInput) returns (TokenResponse) {}
 }

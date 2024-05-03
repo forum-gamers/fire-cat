@@ -8,6 +8,8 @@ import type { Metadata } from '@grpc/grpc-js';
 import { Status } from '@grpc/grpc-js/build/src/constants';
 import { Sequelize } from 'sequelize-typescript';
 import { CoachService } from '../modules/coach/coach.service';
+import encryption from '../helpers/encryption';
+import jwt from '../helpers/jwt';
 
 @Controller()
 export class UserController {
@@ -81,5 +83,26 @@ export class UserController {
       await transaction.rollback();
       throw err;
     }
+  }
+
+  //@ts-ignore
+  @GrpcMethod(USERSERVICE, UserServiceMethod.Login)
+  public async login(data: any, _: Metadata) {
+    const {
+      email,
+      password,
+      as = 'Professional',
+    } = await this.userValidation.validateLogin(data);
+
+    const user = await this.userService.findByEmail(email);
+    if (!user || !encryption.compareEncryption(password, user.password))
+      throw new RpcException({
+        message: 'invalid credentials',
+        code: Status.UNAUTHENTICATED,
+      });
+
+    return {
+      token: jwt.createToken({ id: user.id, accountType: as }),
+    };
   }
 }

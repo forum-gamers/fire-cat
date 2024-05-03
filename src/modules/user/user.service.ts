@@ -41,4 +41,8 @@ export class UserService {
       opts,
     );
   }
+
+  public async findByEmail(email: string) {
+    return await this.userModel.findOne({ where: { email } });
+  }
 }
