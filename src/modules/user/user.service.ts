@@ -55,4 +55,13 @@ export class UserService {
       include: [accountType === 'Admin' ? { model: Admin } : { model: Coach }],
     });
   }
+
+  public async findMultipleByIds(ids: string[]) {
+    return await this.userModel.findAll({
+      where: {
+        id: { [Op.in]: ids },
+        accountType: { [Op.or]: ['Professional', 'Coach'] },
+      },
+    });
+  }
 }

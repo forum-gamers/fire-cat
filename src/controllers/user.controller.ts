@@ -113,4 +113,64 @@ export class UserController {
   public me(_: any, metadata: Metadata) {
     return { data: global.getUserFromMetadata(metadata) };
   }
+
+  //@ts-ignore
+  @GrpcMethod(USERSERVICE, UserServiceMethod.GetMultipleUser)
+  @UseInterceptors(AuthenticationInterceptor)
+  public async getMultipleByUserIds({ ids }: { ids: string[] }, _: Metadata) {
+    if (!ids || !ids.length)
+      throw new RpcException({
+        code: Status.INVALID_ARGUMENT,
+        message: 'parameter ids is required',
+      });
+
+    const data: string[] = [];
+    ids.forEach((el) => {
+      if (
+        !data.includes(el) &&
+        /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(
+          el,
+        ) &&
+        el
+      )
+        data.push(el);
+    });
+
+    if (data.length > 25)
+      throw new RpcException({
+        message: 'Data limit exceeded',
+        code: Status.RESOURCE_EXHAUSTED,
+      });
+
+    if (!data.length)
+      throw new RpcException({
+        code: Status.INVALID_ARGUMENT,
+        message: 'no ids is valid',
+      });
+
+    const users = await this.userService.findMultipleByIds(data);
+    if (!users.length)
+      throw new RpcException({
+        message: 'no data found',
+        code: Status.NOT_FOUND,
+      });
+
+    return {
+      data: users.map(({ dataValues: user }) => ({
+        id: user.id,
+        fullname: user.fullname,
+        username: user.username,
+        email: user.email,
+        isVerified: user.isVerified,
+        bio: user.bio,
+        imageUrl: user.imageUrl,
+        imageId: user.imageId,
+        backgroundImageUrl: user.backgroundImageUrl,
+        backgroundImageId: user.backgroundImageId,
+        status: user.status,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      })),
+    };
+  }
 }
