@@ -126,14 +126,7 @@ export class UserController {
 
     const data: string[] = [];
     ids.forEach((el) => {
-      if (
-        !data.includes(el) &&
-        /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(
-          el,
-        ) &&
-        el
-      )
-        data.push(el);
+      if (!data.includes(el) && global.isValidUUID(el) && el) data.push(el);
     });
 
     if (data.length > 25)
@@ -172,5 +165,25 @@ export class UserController {
         updatedAt: user.updatedAt,
       })),
     };
+  }
+
+  //@ts-ignore
+  @GrpcMethod(USERSERVICE, UserServiceMethod.GetUserById)
+  @UseInterceptors(AuthenticationInterceptor)
+  public async getById({ id }: { id: string }, _: Metadata) {
+    if (!id || !global.isValidUUID(id))
+      throw new RpcException({
+        message: 'invalid parameter id',
+        code: Status.INVALID_ARGUMENT,
+      });
+
+    const data = await this.userService.findOneById(id);
+    if (!data)
+      throw new RpcException({
+        message: 'data not found',
+        code: Status.NOT_FOUND,
+      });
+
+    return { data };
   }
 }

@@ -57,7 +57,6 @@ message RegisterInput {
 service UserService {
   rpc GetMultipleUser(MultipleUserParams) returns (UserDatas) {}
   rpc Me(NoArguments) returns (UserData) {}
-  rpc GetFollowingRecomendation(NoArguments) returns (UserDatas) {}
   rpc GetUserById(UserParams) returns (UserData) {}
   rpc Register(RegisterInput) returns (UserData) {}
   rpc Login(LoginInput) returns (TokenResponse) {}
