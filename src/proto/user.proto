@@ -39,6 +39,7 @@ message UserParams {
 message LoginInput {
   string email = 1;
   string password = 2;
+  string as = 3;
 }
 
 message TokenResponse {
