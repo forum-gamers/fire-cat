@@ -197,12 +197,10 @@ export class UserController extends BaseController {
     const { url, fileId } =
       await this.userValidation.validateChangeProfile(payload);
 
-    await this.userService.changeProfile(
-      this.getUserFromMetadata(metadata).id,
-      url,
-      fileId,
-    );
+    const { id, imageUrl, imageId } = this.getUserFromMetadata(metadata);
 
-    return { message: 'success' };
+    await this.userService.changeProfile(id, url, fileId);
+
+    return { message: !!imageUrl ? imageId : 'success' };
   }
 }
