@@ -55,10 +55,20 @@ message RegisterInput {
   string confirmPassword = 6;
 }
 
+message ChangeProfileInput {
+  string url = 1;
+  string fileId = 2;
+}
+
+message Message {
+  string message = 1;
+}
+
 service UserService {
   rpc GetMultipleUser(MultipleUserParams) returns (UserDatas) {}
   rpc Me(NoArguments) returns (UserData) {}
   rpc GetUserById(UserParams) returns (UserData) {}
   rpc Register(RegisterInput) returns (UserData) {}
   rpc Login(LoginInput) returns (TokenResponse) {}
+  rpc ChangeProfileImg(ChangeProfileInput) returns (Message) {}
 }

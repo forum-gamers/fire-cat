@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User, type UserAttributes } from '../../models/user';
-import { Op, type CreateOptions } from 'sequelize';
+import { Op, type UpdateOptions, type CreateOptions } from 'sequelize';
 import type { CreateUserProps } from './user.interface';
 import { v4 } from 'uuid';
 import encryption from '../../helpers/encryption';
@@ -63,5 +63,17 @@ export class UserService {
         accountType: { [Op.or]: ['Professional', 'Coach'] },
       },
     });
+  }
+
+  public async changeProfile(
+    id: string,
+    imageUrl: string,
+    imageId: string,
+    opts?: UpdateOptions<UserAttributes>,
+  ) {
+    return await this.userModel.update(
+      { imageId, imageUrl },
+      { ...opts, where: { id } },
+    );
   }
 }

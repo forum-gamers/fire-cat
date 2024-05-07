@@ -12,15 +12,18 @@ import encryption from '../helpers/encryption';
 import jwt from '../helpers/jwt';
 import global from '../helpers/global';
 import { AuthenticationInterceptor } from '../middlewares/authentication.middleware';
+import { BaseController } from 'src/base/controller.base';
 
 @Controller()
-export class UserController {
+export class UserController extends BaseController {
   constructor(
     private readonly userService: UserService,
     private readonly userValidation: UserValidation,
     private readonly sequelize: Sequelize,
     private readonly coachService: CoachService,
-  ) {}
+  ) {
+    super();
+  }
 
   //@ts-ignore
   @GrpcMethod(USERSERVICE, UserServiceMethod.Register)
@@ -111,7 +114,7 @@ export class UserController {
   @GrpcMethod(USERSERVICE, UserServiceMethod.Me)
   @UseInterceptors(AuthenticationInterceptor)
   public me(_: any, metadata: Metadata) {
-    return { data: global.getUserFromMetadata(metadata) };
+    return { data: this.getUserFromMetadata(metadata) };
   }
 
   //@ts-ignore
@@ -185,5 +188,21 @@ export class UserController {
       });
 
     return { data };
+  }
+
+  //@ts-ignore
+  @GrpcMethod(USERSERVICE, UserServiceMethod.ChangeProfileImg)
+  @UseInterceptors(AuthenticationInterceptor)
+  public async changeProfileImg(payload: any, metadata: Metadata) {
+    const { url, fileId } =
+      await this.userValidation.validateChangeProfile(payload);
+
+    await this.userService.changeProfile(
+      this.getUserFromMetadata(metadata).id,
+      url,
+      fileId,
+    );
+
+    return { message: 'success' };
   }
 }

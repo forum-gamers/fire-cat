@@ -20,3 +20,12 @@ export interface LoginInputProps {
   password: string;
   as?: AccountType;
 }
+
+export interface Message {
+  message: string;
+}
+
+export interface ChangeProfileInput {
+  url: string;
+  fileId: string;
+}

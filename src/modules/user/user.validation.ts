@@ -1,6 +1,10 @@
 import { BaseValidation } from '../../base/validation.base';
 import { Injectable } from '@nestjs/common';
-import type { LoginInputProps, RegisterInputProps } from './user.interface';
+import type {
+  ChangeProfileInput,
+  LoginInputProps,
+  RegisterInputProps,
+} from './user.interface';
 import * as yup from 'yup';
 import { ACCOUNTTYPE } from '../../constants/global.constant';
 
@@ -44,6 +48,15 @@ export class UserValidation extends BaseValidation {
           .required('email is required'),
         password: yup.string().required('password is required'),
         as: yup.string().oneOf(ACCOUNTTYPE, 'invalid account type').optional(),
+      }),
+      data,
+    );
+
+  public validateChangeProfile = async (data: any) =>
+    await this.validate<ChangeProfileInput>(
+      yup.object().shape({
+        url: yup.string().required('url is required').url('invalid url'),
+        fileId: yup.string().required('fileId is required'),
       }),
       data,
     );

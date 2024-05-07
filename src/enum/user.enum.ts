@@ -4,4 +4,5 @@ export enum UserServiceMethod {
   GetUserById = 'GetUserById',
   Register = 'Register',
   Login = 'Login',
+  ChangeProfileImg = 'ChangeProfileImg',
 }
