@@ -76,4 +76,16 @@ export class UserService {
       { ...opts, where: { id } },
     );
   }
+
+  public async changeBackground(
+    id: string,
+    backgroundImageUrl: string,
+    backgroundImageId: string,
+    opts?: UpdateOptions<UserAttributes>,
+  ) {
+    return await this.userModel.update(
+      { backgroundImageId, backgroundImageUrl },
+      { ...opts, where: { id } },
+    );
+  }
 }

@@ -71,4 +71,5 @@ service UserService {
   rpc Register(RegisterInput) returns (UserData) {}
   rpc Login(LoginInput) returns (TokenResponse) {}
   rpc ChangeProfileImg(ChangeProfileInput) returns (Message) {}
+  rpc ChangeBackgroundImg(ChangeProfileInput) returns (Message) {}
 }

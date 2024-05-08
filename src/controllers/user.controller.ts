@@ -203,4 +203,19 @@ export class UserController extends BaseController {
 
     return { message: !!imageUrl ? imageId : 'success' };
   }
+
+  //@ts-ignore
+  @GrpcMethod(USERSERVICE, UserServiceMethod.ChangeBackgroundImg)
+  @UseInterceptors(AuthenticationInterceptor)
+  public async changeBackground(payload: any, metadata: Metadata) {
+    const { url, fileId } =
+      await this.userValidation.validateChangeProfile(payload);
+
+    const { id, backgroundImageUrl, backgroundImageId } =
+      this.getUserFromMetadata(metadata);
+
+    await this.userService.changeBackground(id, url, fileId);
+
+    return { message: !!backgroundImageUrl ? backgroundImageId : 'success' };
+  }
 }
