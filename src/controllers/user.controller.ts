@@ -104,7 +104,11 @@ export class UserController extends BaseController {
     } = await this.userValidation.validateLogin(data);
 
     const user = await this.userService.findByEmail(email);
-    if (!user || !encryption.compareEncryption(password, user.password))
+    if (
+      !user ||
+      !encryption.compareEncryption(password, user.password) ||
+      !user.isVerified
+    )
       throw new RpcException({
         message: 'invalid credentials',
         code: Status.UNAUTHENTICATED,
