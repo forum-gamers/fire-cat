@@ -12,7 +12,6 @@ import { Coach } from '../../models/coach';
 @Injectable()
 export class UserService {
   constructor(
-    //@ts-ignore
     @InjectModel(User)
     private readonly userModel: typeof User,
   ) {}

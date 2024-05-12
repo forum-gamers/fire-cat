@@ -9,6 +9,7 @@ import { UserModule } from './modules/user/user.module';
 import { Admin } from './models/admin';
 import { Coach } from './models/coach';
 import { CoachModule } from './modules/coach/coach.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 const config = require('../config/config.json');
 const environment = process.env.NODE_ENV ?? 'development';
 
@@ -33,6 +34,19 @@ const environment = process.env.NODE_ENV ?? 'development';
     }),
     UserModule,
     CoachModule,
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        tls: {
+          rejectUnauthorized: false,
+        },
+        debug: true,
+        auth: {
+          user: process.env.MAILER_EMAIL,
+          pass: process.env.MAILER_PASSWORD,
+        },
+      },
+    }),
   ],
 })
 export class AppModule {}

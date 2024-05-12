@@ -6,7 +6,6 @@ import { type CreateOptions } from 'sequelize';
 @Injectable()
 export class CoachService {
   constructor(
-    //@ts-ignore
     @InjectModel(Coach)
     private readonly coachModel: typeof Coach,
   ) {}

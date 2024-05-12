@@ -12,7 +12,8 @@ import encryption from '../helpers/encryption';
 import jwt from '../helpers/jwt';
 import global from '../helpers/global';
 import { AuthenticationInterceptor } from '../middlewares/authentication.middleware';
-import { BaseController } from 'src/base/controller.base';
+import { BaseController } from '../base/controller.base';
+import { Mailer } from '../libs/mailer';
 
 @Controller()
 export class UserController extends BaseController {
@@ -21,11 +22,11 @@ export class UserController extends BaseController {
     private readonly userValidation: UserValidation,
     private readonly sequelize: Sequelize,
     private readonly coachService: CoachService,
+    private readonly emailService: Mailer,
   ) {
     super();
   }
 
-  //@ts-ignore
   @GrpcMethod(USERSERVICE, UserServiceMethod.Register)
   public async register(data: any, _: Metadata) {
     const transaction = await this.sequelize.transaction();
@@ -65,6 +66,11 @@ export class UserController extends BaseController {
       if (role === 'Coach')
         await this.coachService.createOne(user.id, { transaction });
 
+      await this.emailService.sendConfirmEmail(email, {
+        id: user.id,
+        accountType: role,
+      });
+
       await transaction.commit();
       return {
         data: {
@@ -89,7 +95,6 @@ export class UserController extends BaseController {
     }
   }
 
-  //@ts-ignore
   @GrpcMethod(USERSERVICE, UserServiceMethod.Login)
   public async login(data: any, _: Metadata) {
     const {
@@ -110,14 +115,12 @@ export class UserController extends BaseController {
     };
   }
 
-  //@ts-ignore
   @GrpcMethod(USERSERVICE, UserServiceMethod.Me)
   @UseInterceptors(AuthenticationInterceptor)
   public me(_: any, metadata: Metadata) {
     return { data: this.getUserFromMetadata(metadata) };
   }
 
-  //@ts-ignore
   @GrpcMethod(USERSERVICE, UserServiceMethod.GetMultipleUser)
   @UseInterceptors(AuthenticationInterceptor)
   public async getMultipleByUserIds({ ids }: { ids: string[] }, _: Metadata) {
@@ -170,7 +173,6 @@ export class UserController extends BaseController {
     };
   }
 
-  //@ts-ignore
   @GrpcMethod(USERSERVICE, UserServiceMethod.GetUserById)
   @UseInterceptors(AuthenticationInterceptor)
   public async getById({ id }: { id: string }, _: Metadata) {
@@ -190,7 +192,6 @@ export class UserController extends BaseController {
     return { data };
   }
 
-  //@ts-ignore
   @GrpcMethod(USERSERVICE, UserServiceMethod.ChangeProfileImg)
   @UseInterceptors(AuthenticationInterceptor)
   public async changeProfileImg(payload: any, metadata: Metadata) {
@@ -204,7 +205,6 @@ export class UserController extends BaseController {
     return { message: !!imageUrl ? imageId : 'success' };
   }
 
-  //@ts-ignore
   @GrpcMethod(USERSERVICE, UserServiceMethod.ChangeBackgroundImg)
   @UseInterceptors(AuthenticationInterceptor)
   public async changeBackground(payload: any, metadata: Metadata) {
