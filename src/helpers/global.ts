@@ -4,6 +4,10 @@ class GlobalHelper {
       id,
     );
   }
+
+  public replaceSpecialChar(input: string) {
+    return input.replaceAll(/[\s'"<>(),;&!?+#=*]/g, '-');
+  }
 }
 
 export default new GlobalHelper();

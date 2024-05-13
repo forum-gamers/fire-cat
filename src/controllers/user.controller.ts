@@ -59,7 +59,12 @@ export class UserController extends BaseController {
         }
 
       const user = await this.userService.createOne(
-        { fullname, username, email, password },
+        {
+          fullname,
+          username: global.replaceSpecialChar(username),
+          email,
+          password,
+        },
         { transaction },
       );
 

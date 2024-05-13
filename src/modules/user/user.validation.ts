@@ -16,7 +16,10 @@ export class UserValidation extends BaseValidation {
         .object()
         .shape({
           fullname: yup.string().required('fullname is required'),
-          username: yup.string().required('username is required'),
+          username: yup
+            .string()
+            .required('username is required')
+            .min(3, 'minimum username character is 3'),
           email: yup
             .string()
             .required('email is required')
