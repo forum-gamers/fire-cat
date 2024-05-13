@@ -64,6 +64,10 @@ message Message {
   string message = 1;
 }
 
+message TokenInput {
+  string token = 1;
+}
+
 service UserService {
   rpc GetMultipleUser(MultipleUserParams) returns (UserDatas) {}
   rpc Me(NoArguments) returns (UserData) {}
@@ -72,4 +76,5 @@ service UserService {
   rpc Login(LoginInput) returns (TokenResponse) {}
   rpc ChangeProfileImg(ChangeProfileInput) returns (Message) {}
   rpc ChangeBackgroundImg(ChangeProfileInput) returns (Message) {}
+  rpc ChangeVerified(TokenInput) returns (Message) {}
 }

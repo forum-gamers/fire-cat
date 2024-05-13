@@ -59,7 +59,6 @@ export class UserService {
     return await this.userModel.findAll({
       where: {
         id: { [Op.in]: ids },
-        accountType: { [Op.or]: ['Professional', 'Coach'] },
       },
     });
   }
@@ -86,5 +85,9 @@ export class UserService {
       { backgroundImageId, backgroundImageUrl },
       { ...opts, where: { id } },
     );
+  }
+
+  public async activatedUser(id: string) {
+    return await this.userModel.update({ isVerified: true }, { where: { id } });
   }
 }

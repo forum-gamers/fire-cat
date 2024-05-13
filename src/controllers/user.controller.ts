@@ -227,4 +227,14 @@ export class UserController extends BaseController {
 
     return { message: !!backgroundImageUrl ? backgroundImageId : 'success' };
   }
+
+  @GrpcMethod(USERSERVICE, UserServiceMethod.ChangeVerified)
+  public async changeVerified(payload: any, metadata: Metadata) {
+    const { token } = await this.userValidation.validateTokenVerified(payload);
+
+    const { id } = jwt.verifyToken(token, 'invalid token');
+    await this.userService.activatedUser(id);
+
+    return { message: 'success' };
+  }
 }

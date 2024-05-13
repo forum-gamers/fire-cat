@@ -6,4 +6,5 @@ export enum UserServiceMethod {
   Login = 'Login',
   ChangeProfileImg = 'ChangeProfileImg',
   ChangeBackgroundImg = 'ChangeBackgroundImg',
+  ChangeVerified = 'ChangeVerified',
 }

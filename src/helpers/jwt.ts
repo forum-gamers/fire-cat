@@ -18,12 +18,12 @@ export interface TokenValue {
 }
 
 class Jwt {
-  public verifyToken(token: string) {
+  public verifyToken(token: string, message = 'missing or invalid token') {
     try {
       return verify(token, process.env.SECRET) as unknown as JwtValue;
     } catch (err) {
       throw new RpcException({
-        message: 'missing or invalid token',
+        message,
         code: Status.UNAUTHENTICATED,
       });
     }

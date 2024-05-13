@@ -63,4 +63,12 @@ export class UserValidation extends BaseValidation {
       }),
       data,
     );
+
+  public validateTokenVerified = async (data: any) =>
+    await this.validate<{ token: string }>(
+      yup.object().shape({
+        token: yup.string().required('token is required'),
+      }),
+      data,
+    );
 }
