@@ -74,6 +74,7 @@ export class UserController extends BaseController {
       await this.emailService.sendConfirmEmail(email, {
         id: user.id,
         accountType: role,
+        username: user.username,
       });
 
       await transaction.commit();
@@ -120,7 +121,11 @@ export class UserController extends BaseController {
       });
 
     return {
-      token: jwt.createToken({ id: user.id, accountType: as }),
+      token: jwt.createToken({
+        id: user.id,
+        accountType: as,
+        username: user.username,
+      }),
     };
   }
 

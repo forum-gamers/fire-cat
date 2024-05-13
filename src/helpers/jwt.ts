@@ -15,6 +15,7 @@ export type JwtValue = JwtPayload & TokenValue;
 export interface TokenValue {
   id: string;
   accountType: AccountType;
+  username: string;
 }
 
 class Jwt {
