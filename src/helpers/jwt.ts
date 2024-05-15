@@ -14,7 +14,7 @@ export type JwtValue = JwtPayload & TokenValue;
 
 export interface TokenValue {
   id: string;
-  accountType: AccountType;
+  accountType: AccountType | null;
   username: string;
   isVerified: boolean;
 }

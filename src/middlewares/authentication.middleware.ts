@@ -31,7 +31,7 @@ export class AuthenticationInterceptor implements NestInterceptor {
 
     const { id, accountType } = jwt.verifyToken(access_token[0] as string);
     let user: User | null = null;
-    if (accountType !== 'Professional')
+    if (accountType !== null)
       user = await this.userService.findByIdAndPreload(id, accountType);
     else user = await this.userService.findOneById(id);
 

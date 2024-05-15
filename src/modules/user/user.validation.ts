@@ -31,8 +31,10 @@ export class UserValidation extends BaseValidation {
           confirmPassword: yup.string().required('confirmPassword is required'),
           role: yup
             .string()
-            .required('role is required')
-            .oneOf(ACCOUNTTYPE, 'invalid account type'),
+            .oneOf(ACCOUNTTYPE, 'invalid account type')
+            .optional()
+            .nullable()
+            .default(null),
         })
         .test(
           'is same',
@@ -47,7 +49,12 @@ export class UserValidation extends BaseValidation {
       yup.object().shape({
         email: this.yupEmail,
         password: yup.string().required('password is required'),
-        as: yup.string().oneOf(ACCOUNTTYPE, 'invalid account type').optional(),
+        as: yup
+          .string()
+          .oneOf(ACCOUNTTYPE, 'invalid account type')
+          .optional()
+          .nullable()
+          .default(null),
       }),
       data,
     );

@@ -5,7 +5,7 @@ export interface RegisterInputProps {
   username: string;
   email: string;
   password: string;
-  role?: AccountType;
+  role?: AccountType | null;
 }
 
 export interface CreateUserProps {

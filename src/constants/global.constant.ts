@@ -1,3 +1,3 @@
 import { AccountType } from '../interfaces/global.interface';
 
-export const ACCOUNTTYPE: AccountType[] = ['Admin', 'Coach', 'Professional'];
+export const ACCOUNTTYPE: AccountType[] = ['Admin', 'Coach', 'Vendors'];

@@ -2,6 +2,8 @@ import { DataTypes } from 'sequelize';
 import { Table, Model, Column, HasOne } from 'sequelize-typescript';
 import { Admin } from './admin';
 import { Coach } from './coach';
+import type { AccountType } from '../interfaces/global.interface';
+import { Vendor } from './vendor';
 
 export interface UserAttributes {
   id: string;
@@ -18,8 +20,10 @@ export interface UserAttributes {
   status: string;
   createdAt: Date;
   updatedAt: Date;
-  Admin?: Admin;
-  Coach?: Coach;
+  admin?: Admin;
+  coach?: Coach;
+  vendor?: Vendor;
+  role: AccountType;
 }
 
 export type TableType = Model & UserAttributes;
@@ -146,9 +150,19 @@ export class User extends Model<UserAttributes, any> {
   })
   public updatedAt: Date;
 
+  @Column({
+    type: DataTypes.ENUM,
+    values: ['Admin', 'Coach', 'Vendors'],
+    defaultValue: null,
+  })
+  public role: AccountType;
+
   @HasOne(() => Admin)
   admin?: Admin;
 
   @HasOne(() => Coach)
   coach?: Coach;
+
+  @HasOne(() => Vendor)
+  vendor?: Vendor;
 }

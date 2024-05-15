@@ -51,7 +51,16 @@ export class UserService {
   public async findByIdAndPreload(id: string, accountType: AccountType) {
     return await this.userModel.findOne({
       where: { id },
-      include: [accountType === 'Admin' ? { model: Admin } : { model: Coach }],
+      include: (() => {
+        switch (accountType) {
+          case 'Admin':
+            return { model: Admin };
+          case 'Coach':
+            return { model: Coach };
+          default:
+            return [];
+        }
+      })(),
     });
   }
 

@@ -36,7 +36,7 @@ export class UserController extends BaseController {
         username,
         email,
         password,
-        role = 'Professional',
+        role = null,
       } = await this.userValidation.validateRegister(data);
 
       const existing = await this.userService.findByQuery({
@@ -73,7 +73,7 @@ export class UserController extends BaseController {
 
       await this.emailService.sendConfirmEmail(email, {
         id: user.id,
-        accountType: role,
+        accountType: user.role,
         username: user.username,
         isVerified: user.isVerified,
       });
@@ -107,7 +107,7 @@ export class UserController extends BaseController {
     const {
       email,
       password,
-      as = 'Professional',
+      as = null,
     } = await this.userValidation.validateLogin(data);
 
     const user = await this.userService.findByEmail(email);
@@ -266,7 +266,7 @@ export class UserController extends BaseController {
 
     await this.emailService.sendConfirmEmail(email, {
       id: user.id,
-      accountType: 'Professional',
+      accountType: user.role,
       username: user.username,
       isVerified: user.isVerified,
     });

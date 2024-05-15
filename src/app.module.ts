@@ -10,6 +10,7 @@ import { Admin } from './models/admin';
 import { Coach } from './models/coach';
 import { CoachModule } from './modules/coach/coach.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { VendorModule } from './modules/vendor/vendor.module';
 const config = require('../config/config.json');
 const environment = process.env.NODE_ENV ?? 'development';
 
@@ -34,6 +35,7 @@ const environment = process.env.NODE_ENV ?? 'development';
     }),
     UserModule,
     CoachModule,
+    VendorModule,
     MailerModule.forRoot({
       transport: {
         host: 'smtp.gmail.com',

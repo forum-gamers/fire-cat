@@ -1,4 +1,4 @@
-export type AccountType = 'Admin' | 'Coach' | 'Professional';
+export type AccountType = 'Admin' | 'Coach' | 'Vendors' | null;
 
 export type AdminDivision =
   | 'Director'
