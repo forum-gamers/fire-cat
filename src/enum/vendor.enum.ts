@@ -3,4 +3,5 @@ export enum VendorServiceEnum {
   UpdateVendorImg = 'UpdateVendorImg',
   UpdateVendorBg = 'UpdateVendorBg',
   UpdateDesc = 'UpdateDesc',
+  Me = 'Me',
 }

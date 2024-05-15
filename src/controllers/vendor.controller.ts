@@ -121,4 +121,17 @@ export class VendorController extends BaseController {
     await this.vendorService.updateDesc(id, desc);
     return { ...vendor.dataValues, description: desc };
   }
+
+  @GrpcMethod(VENDORSERVICE, VendorServiceEnum.Me)
+  public async findById(_: any, metadata: Metadata) {
+    const { id } = this.getUserFromMetadata(metadata);
+    const vendor = await this.vendorService.findByUserId(id);
+    if (!vendor)
+      throw new RpcException({
+        message: 'vendor not found',
+        code: Status.NOT_FOUND,
+      });
+
+    return vendor.dataValues;
+  }
 }

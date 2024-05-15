@@ -9,6 +9,10 @@ message Vendor {
   string description = 4;
   string createdAt = 5;
   string updatedAt = 6;
+  string imageUrl = 7;
+  string imageId = 8;
+  string backgroundImageUrl = 9;
+  string backgroundImageId = 10;
 }
 
 message FileInput {
@@ -27,9 +31,12 @@ message DescInput {
   string desc = 1;
 }
 
+message NoArgument {}
+
 service VendorService {
   rpc CreateVendorAccount(CreateVendorInput) returns (Vendor) {}
   rpc UpdateVendorImg(FileInput) returns (Vendor) {}
   rpc UpdateVendorBg(FileInput) returns (Vendor) {}
   rpc UpdateDesc(DescInput) returns (Vendor) {}
+  rpc Me(NoArgument) returns (Vendor) {}
 }
