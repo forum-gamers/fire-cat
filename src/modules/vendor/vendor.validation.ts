@@ -29,4 +29,12 @@ export class VendorValidation extends BaseValidation {
 
   public validateUpdateImg = async (data: any) =>
     await this.validate<FileInput>(yup.object().shape(this.yupFile), data);
+
+  public validateUpdateDesc = async (data: any) =>
+    await this.validate<{ desc: string }>(
+      yup.object().shape({
+        desc: yup.string().required('desc is required'),
+      }),
+      data,
+    );
 }

@@ -105,4 +105,20 @@ export class VendorController extends BaseController {
       backgroundImageId: fileId,
     };
   }
+
+  @GrpcMethod(VENDORSERVICE, VendorServiceEnum.UpdateDesc)
+  public async updateDesc(payload: any, metadata: Metadata) {
+    const { desc } = await this.vendorValidation.validateUpdateDesc(payload);
+
+    const { id } = this.getUserFromMetadata(metadata);
+    const vendor = await this.vendorService.findByUserId(id);
+    if (!vendor)
+      throw new RpcException({
+        message: 'vendor not found',
+        code: Status.NOT_FOUND,
+      });
+
+    await this.vendorService.updateDesc(id, desc);
+    return { ...vendor.dataValues, description: desc };
+  }
 }

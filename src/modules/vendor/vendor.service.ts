@@ -54,4 +54,15 @@ export class VendorService {
       { ...opts, where: { userId } },
     );
   }
+
+  public async updateDesc(
+    userId: string,
+    description: string,
+    opts?: UpdateOptions<VendorAttributes>,
+  ) {
+    return await this.vendorModel.update(
+      { description },
+      { ...opts, where: { userId } },
+    );
+  }
 }

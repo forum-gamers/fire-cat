@@ -23,8 +23,13 @@ message CreateVendorInput {
   FileInput background = 4;
 }
 
+message DescInput {
+  string desc = 1;
+}
+
 service VendorService {
   rpc CreateVendorAccount(CreateVendorInput) returns (Vendor) {}
   rpc UpdateVendorImg(FileInput) returns (Vendor) {}
   rpc UpdateVendorBg(FileInput) returns (Vendor) {}
+  rpc UpdateDesc(DescInput) returns (Vendor) {}
 }
