@@ -16,6 +16,7 @@ export interface TokenValue {
   id: string;
   accountType: AccountType;
   username: string;
+  isVerified: boolean;
 }
 
 class Jwt {

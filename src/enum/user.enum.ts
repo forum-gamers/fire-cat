@@ -7,4 +7,5 @@ export enum UserServiceMethod {
   ChangeProfileImg = 'ChangeProfileImg',
   ChangeBackgroundImg = 'ChangeBackgroundImg',
   ChangeVerified = 'ChangeVerified',
+  ResendEmailVerification = 'ResendEmailVerification',
 }

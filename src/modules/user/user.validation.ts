@@ -45,10 +45,7 @@ export class UserValidation extends BaseValidation {
   public validateLogin = async (data: any) =>
     await this.validate<LoginInputProps>(
       yup.object().shape({
-        email: yup
-          .string()
-          .email('invalid email format')
-          .required('email is required'),
+        email: this.yupEmail,
         password: yup.string().required('password is required'),
         as: yup.string().oneOf(ACCOUNTTYPE, 'invalid account type').optional(),
       }),
@@ -68,6 +65,14 @@ export class UserValidation extends BaseValidation {
     await this.validate<{ token: string }>(
       yup.object().shape({
         token: yup.string().required('token is required'),
+      }),
+      data,
+    );
+
+  public validateEmailInput = async (data: any) =>
+    await this.validate<{ email: string }>(
+      yup.object().shape({
+        email: this.yupEmail,
       }),
       data,
     );

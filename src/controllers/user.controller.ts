@@ -75,6 +75,7 @@ export class UserController extends BaseController {
         id: user.id,
         accountType: role,
         username: user.username,
+        isVerified: user.isVerified,
       });
 
       await transaction.commit();
@@ -110,13 +111,15 @@ export class UserController extends BaseController {
     } = await this.userValidation.validateLogin(data);
 
     const user = await this.userService.findByEmail(email);
-    if (
-      !user ||
-      !encryption.compareEncryption(password, user.password) ||
-      !user.isVerified
-    )
+    if (!user || !encryption.compareEncryption(password, user.password))
       throw new RpcException({
         message: 'invalid credentials',
+        code: Status.UNAUTHENTICATED,
+      });
+
+    if (!user.isVerified)
+      throw new RpcException({
+        message: 'account unverified, please check your email',
         code: Status.UNAUTHENTICATED,
       });
 
@@ -125,6 +128,7 @@ export class UserController extends BaseController {
         id: user.id,
         accountType: as,
         username: user.username,
+        isVerified: user.isVerified,
       }),
     };
   }
@@ -138,7 +142,7 @@ export class UserController extends BaseController {
   @GrpcMethod(USERSERVICE, UserServiceMethod.GetMultipleUser)
   @UseInterceptors(AuthenticationInterceptor)
   public async getMultipleByUserIds({ ids }: { ids: string[] }, _: Metadata) {
-    if (!ids || !ids.length)
+    if (!ids?.length)
       throw new RpcException({
         code: Status.INVALID_ARGUMENT,
         message: 'parameter ids is required',
@@ -216,7 +220,7 @@ export class UserController extends BaseController {
 
     await this.userService.changeProfile(id, url, fileId);
 
-    return { message: !!imageUrl ? imageId : 'success' };
+    return { message: imageUrl ? imageId : 'success' };
   }
 
   @GrpcMethod(USERSERVICE, UserServiceMethod.ChangeBackgroundImg)
@@ -230,7 +234,7 @@ export class UserController extends BaseController {
 
     await this.userService.changeBackground(id, url, fileId);
 
-    return { message: !!backgroundImageUrl ? backgroundImageId : 'success' };
+    return { message: backgroundImageUrl ? backgroundImageId : 'success' };
   }
 
   @GrpcMethod(USERSERVICE, UserServiceMethod.ChangeVerified)
@@ -239,6 +243,33 @@ export class UserController extends BaseController {
 
     const { id } = jwt.verifyToken(token, 'invalid token');
     await this.userService.activatedUser(id);
+
+    return { message: 'success' };
+  }
+
+  @GrpcMethod(USERSERVICE, UserServiceMethod.ResendEmailVerification)
+  public async resend(payload: any, metadata: Metadata) {
+    const { email } = await this.userValidation.validateEmailInput(payload);
+
+    const user = await this.userService.findByEmail(email);
+    if (!user)
+      throw new RpcException({
+        message: 'user not found',
+        code: Status.NOT_FOUND,
+      });
+
+    if (user.isVerified)
+      throw new RpcException({
+        message: 'user is already verified',
+        code: Status.ALREADY_EXISTS,
+      });
+
+    await this.emailService.sendConfirmEmail(email, {
+      id: user.id,
+      accountType: 'Professional',
+      username: user.username,
+      isVerified: user.isVerified,
+    });
 
     return { message: 'success' };
   }

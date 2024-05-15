@@ -52,4 +52,9 @@ export abstract class BaseValidation {
 
     return true;
   }
+
+  protected yupEmail = yup
+    .string()
+    .email('invalid email format')
+    .required('email is required');
 }
