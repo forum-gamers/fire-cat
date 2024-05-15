@@ -65,4 +65,7 @@ export class VendorController extends BaseController {
       throw err;
     }
   }
+
+  @GrpcMethod(VENDORSERVICE, VendorServiceEnum.UpdateVendorImg)
+  public async updateImg(payload: any, metadata) {}
 }

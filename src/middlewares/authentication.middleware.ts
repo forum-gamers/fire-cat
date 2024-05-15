@@ -11,6 +11,7 @@ import jwt from '../helpers/jwt';
 import { UserService } from '../modules/user/user.service';
 import { User } from '../models/user';
 import type { Metadata } from '@grpc/grpc-js';
+import { USER_KEY } from '../constants/user.constants';
 
 @Injectable()
 export class AuthenticationInterceptor implements NestInterceptor {
@@ -42,24 +43,7 @@ export class AuthenticationInterceptor implements NestInterceptor {
       });
 
     for (const key in user.dataValues)
-      if (
-        [
-          'id',
-          'fullname',
-          'username',
-          'email',
-          'bio',
-          'isVerified',
-          'imageUrl',
-          'imageId',
-          'backgroundImageUrl',
-          'backgroundImageId',
-          'status',
-          'createdAt',
-          'updatedAt',
-        ].includes(key)
-      )
-        metadata.set(key, user[key]);
+      if (USER_KEY.includes(key)) metadata.set(key, user[key]);
 
     return next.handle().pipe();
   }

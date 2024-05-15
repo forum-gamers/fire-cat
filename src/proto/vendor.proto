@@ -25,4 +25,5 @@ message CreateVendorInput {
 
 service VendorService {
   rpc CreateVendorAccount(CreateVendorInput) returns (Vendor) {}
+  rpc UpdateVendorImg(FileInput) returns (Vendor) {}
 }

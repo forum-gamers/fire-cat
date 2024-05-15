@@ -20,6 +20,7 @@ module.exports = {
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
+        unique: true,
       },
       name: {
         type: Sequelize.STRING,
