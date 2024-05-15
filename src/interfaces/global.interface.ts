@@ -9,3 +9,8 @@ export type AdminDivision =
   | 'Marketing';
 
 export type AdminRole = 'Supervisor' | 'Manager' | 'Staff';
+
+export interface FileInput {
+  url: string;
+  fileId: string;
+}

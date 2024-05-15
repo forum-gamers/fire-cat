@@ -99,4 +99,12 @@ export class UserService {
   public async activatedUser(id: string) {
     return await this.userModel.update({ isVerified: true }, { where: { id } });
   }
+
+  public async updateRole(
+    id: string,
+    role: AccountType,
+    opts?: UpdateOptions<UserAttributes>,
+  ) {
+    return await this.userModel.update({ role }, { ...opts, where: { id } });
+  }
 }

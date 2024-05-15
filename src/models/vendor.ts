@@ -13,6 +13,10 @@ export interface VendorAttributes {
   userId: string;
   name: string;
   description: string;
+  imageUrl: string;
+  imageId: string;
+  backgroundImageUrl: string;
+  backgroundImageId: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -66,6 +70,28 @@ export class Vendor extends Model<VendorAttributes, any> {
     defaultValue: '',
   })
   public description: string;
+
+  @Column({
+    type: DataTypes.STRING,
+    defaultValue: '',
+  })
+  public imageUrl: string;
+
+  @Column({
+    type: DataTypes.STRING,
+    defaultValue: '',
+  })
+  public imageId: string;
+  @Column({
+    type: DataTypes.STRING,
+    defaultValue: '',
+  })
+  public backgroundImageUrl: string;
+  @Column({
+    type: DataTypes.STRING,
+    defaultValue: '',
+  })
+  public backgroundImageId: string;
 
   @Column({
     allowNull: false,

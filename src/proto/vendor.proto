@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package vendor;
+
+message Vendor {
+  int64 id = 1;
+  string userId = 2;
+  string name = 3;
+  string description = 4;
+  string createdAt = 5;
+  string updatedAt = 6;
+}
+
+message FileInput {
+  string url = 1;
+  string fileId = 2;
+}
+
+message CreateVendorInput {
+  string name = 1;
+  string description = 2;
+  FileInput image = 3;
+  FileInput background = 4;
+}
+
+service VendorService {
+  rpc CreateVendorAccount(CreateVendorInput) returns (Vendor) {}
+}

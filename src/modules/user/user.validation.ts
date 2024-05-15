@@ -61,10 +61,7 @@ export class UserValidation extends BaseValidation {
 
   public validateChangeProfile = async (data: any) =>
     await this.validate<ChangeProfileInput>(
-      yup.object().shape({
-        url: yup.string().required('url is required').url('invalid url'),
-        fileId: yup.string().required('fileId is required'),
-      }),
+      yup.object().shape(this.yupFile),
       data,
     );
 

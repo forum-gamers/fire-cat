@@ -57,4 +57,9 @@ export abstract class BaseValidation {
     .string()
     .email('invalid email format')
     .required('email is required');
+
+  protected yupFile = {
+    url: yup.string().required('url is required'),
+    fileId: yup.string().required('fileId is required'),
+  };
 }

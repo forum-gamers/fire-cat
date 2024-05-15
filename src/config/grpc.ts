@@ -5,7 +5,7 @@ import { readdirSync } from 'fs';
 export const grpcClientOptions: GrpcOptions = {
   transport: Transport.GRPC,
   options: {
-    package: ['user'],
+    package: ['user', 'vendor'],
     protoPath: (() => {
       const result: string[] = [];
       for (const dirr of readdirSync(join(__dirname, '../proto')))

@@ -11,6 +11,7 @@ import { Coach } from './models/coach';
 import { CoachModule } from './modules/coach/coach.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { VendorModule } from './modules/vendor/vendor.module';
+import { Vendor } from './models/vendor';
 const config = require('../config/config.json');
 const environment = process.env.NODE_ENV ?? 'development';
 
@@ -30,7 +31,7 @@ const environment = process.env.NODE_ENV ?? 'development';
         idle: 5,
         max: 20,
       },
-      models: [User, Admin, Coach],
+      models: [User, Admin, Coach, Vendor],
       synchronize: environment !== 'production',
     }),
     UserModule,
