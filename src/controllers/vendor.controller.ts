@@ -67,5 +67,42 @@ export class VendorController extends BaseController {
   }
 
   @GrpcMethod(VENDORSERVICE, VendorServiceEnum.UpdateVendorImg)
-  public async updateImg(payload: any, metadata) {}
+  public async updateImg(payload: any, metadata: Metadata) {
+    const { url, fileId } =
+      await this.vendorValidation.validateUpdateImg(payload);
+
+    const { id } = this.getUserFromMetadata(metadata);
+    const vendor = await this.vendorService.findByUserId(id);
+    if (!vendor)
+      throw new RpcException({
+        message: 'vendor not found',
+        code: Status.NOT_FOUND,
+      });
+
+    await this.vendorService.updateImage(id, { url, fileId });
+
+    return { ...vendor.dataValues, imageUrl: url, imageId: fileId };
+  }
+
+  @GrpcMethod(VENDORSERVICE, VendorServiceEnum.UpdateVendorBg)
+  public async updateBg(payload: any, metadata: Metadata) {
+    const { url, fileId } =
+      await this.vendorValidation.validateUpdateImg(payload);
+
+    const { id } = this.getUserFromMetadata(metadata);
+    const vendor = await this.vendorService.findByUserId(id);
+    if (!vendor)
+      throw new RpcException({
+        message: 'vendor not found',
+        code: Status.NOT_FOUND,
+      });
+
+    await this.vendorService.updateBg(id, { url, fileId });
+
+    return {
+      ...vendor.dataValues,
+      backgroundImageUrl: url,
+      backgroundImageId: fileId,
+    };
+  }
 }

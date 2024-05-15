@@ -16,3 +16,8 @@ export interface CreateVendorProps {
   backgroundImageId?: string;
   userId: string;
 }
+
+export interface UpdateImgProps {
+  url: string;
+  fileId: string;
+}

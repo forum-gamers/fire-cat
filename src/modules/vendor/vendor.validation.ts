@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BaseValidation } from '../../base/validation.base';
 import type { CreateVendorInput } from './vendor.interface';
 import * as yup from 'yup';
+import type { FileInput } from '../../interfaces/global.interface';
 
 @Injectable()
 export class VendorValidation extends BaseValidation {
@@ -25,4 +26,7 @@ export class VendorValidation extends BaseValidation {
       }),
       data,
     );
+
+  public validateUpdateImg = async (data: any) =>
+    await this.validate<FileInput>(yup.object().shape(this.yupFile), data);
 }

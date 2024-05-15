@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Vendor, type VendorAttributes } from '../../models/vendor';
-import type { CreateVendorProps } from './vendor.interface';
-import { type CreateOptions } from 'sequelize';
+import type { CreateVendorProps, UpdateImgProps } from './vendor.interface';
+import { type UpdateOptions, type CreateOptions } from 'sequelize';
 
 @Injectable()
 export class VendorService {
@@ -26,6 +26,32 @@ export class VendorService {
         backgroundImageId: args?.backgroundImageId ?? '',
       },
       opts,
+    );
+  }
+
+  public async updateImage(
+    userId: string,
+    { url, fileId }: UpdateImgProps,
+    opts?: UpdateOptions<VendorAttributes>,
+  ) {
+    return await this.vendorModel.update(
+      { imageUrl: url, imageId: fileId },
+      { ...opts, where: { userId } },
+    );
+  }
+
+  public async findByUserId(userId: string) {
+    return await this.vendorModel.findOne({ where: { userId } });
+  }
+
+  public async updateBg(
+    userId: string,
+    { url, fileId }: UpdateImgProps,
+    opts?: UpdateOptions<VendorAttributes>,
+  ) {
+    return await this.vendorModel.update(
+      { backgroundImageUrl: url, backgroundImageId: fileId },
+      { ...opts, where: { userId } },
     );
   }
 }
