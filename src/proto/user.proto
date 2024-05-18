@@ -72,11 +72,16 @@ message EmailInput {
   string email = 1;
 }
 
+message RegisterResp {
+  User data = 1;
+  string token = 2;
+}
+
 service UserService {
   rpc GetMultipleUser(MultipleUserParams) returns (UserDatas) {}
   rpc Me(NoArguments) returns (UserData) {}
   rpc GetUserById(UserParams) returns (UserData) {}
-  rpc Register(RegisterInput) returns (UserData) {}
+  rpc Register(RegisterInput) returns (RegisterResp) {}
   rpc Login(LoginInput) returns (TokenResponse) {}
   rpc ChangeProfileImg(ChangeProfileInput) returns (Message) {}
   rpc ChangeBackgroundImg(ChangeProfileInput) returns (Message) {}

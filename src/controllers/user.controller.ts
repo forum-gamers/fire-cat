@@ -71,12 +71,13 @@ export class UserController extends BaseController {
       if (role === 'Coach')
         await this.coachService.createOne(user.id, { transaction });
 
-      await this.emailService.sendConfirmEmail(email, {
+      const tokenValue = {
         id: user.id,
         accountType: user.role,
         username: user.username,
         isVerified: user.isVerified,
-      });
+      };
+      await this.emailService.sendConfirmEmail(email, tokenValue);
 
       await transaction.commit();
       return {
@@ -95,6 +96,7 @@ export class UserController extends BaseController {
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         },
+        token: jwt.createToken(tokenValue),
       };
     } catch (err) {
       await transaction.rollback();
