@@ -6,6 +6,7 @@ export interface RegisterInputProps {
   email: string;
   password: string;
   role?: AccountType | null;
+  phoneNumber: string;
 }
 
 export interface CreateUserProps {
@@ -13,6 +14,7 @@ export interface CreateUserProps {
   username: string;
   email: string;
   password: string;
+  phoneNumber: string;
 }
 
 export interface LoginInputProps {

@@ -28,7 +28,7 @@ export class UserService {
   }
 
   public async createOne(
-    { fullname, username, email, password }: CreateUserProps,
+    { fullname, username, email, password, phoneNumber }: CreateUserProps,
     opts?: CreateOptions<UserAttributes>,
   ) {
     return await this.userModel.create(
@@ -39,6 +39,7 @@ export class UserService {
         email,
         password: encryption.hash(password),
         status: 'active',
+        phoneNumber,
       },
       opts,
     );

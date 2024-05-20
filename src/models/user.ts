@@ -24,6 +24,7 @@ export interface UserAttributes {
   coach?: Coach;
   vendor?: Vendor;
   role: AccountType;
+  phoneNumber: string;
 }
 
 export type TableType = Model & UserAttributes;
@@ -156,6 +157,20 @@ export class User extends Model<UserAttributes, any> {
     defaultValue: null,
   })
   public role: AccountType;
+
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        msg: 'phoneNumber is required',
+      },
+      notNull: {
+        msg: 'phoneNumber is required',
+      },
+    },
+  })
+  public phoneNumber: string;
 
   @HasOne(() => Admin)
   admin?: Admin;

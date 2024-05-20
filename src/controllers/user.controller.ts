@@ -37,26 +37,35 @@ export class UserController extends BaseController {
         email,
         password,
         role = null,
+        phoneNumber,
       } = await this.userValidation.validateRegister(data);
 
       const existing = await this.userService.findByQuery({
         username,
         email,
+        phoneNumber,
       });
       if (existing.length)
-        for (const data of existing) {
-          if (data.email === email)
-            throw new RpcException({
-              message: `${email} is already use`,
-              code: Status.ALREADY_EXISTS,
-            });
-
-          if (data.username === username)
-            throw new RpcException({
-              message: `${username} is already use`,
-              code: Status.ALREADY_EXISTS,
-            });
-        }
+        for (const data of existing)
+          switch (true) {
+            case data.email === email:
+              throw new RpcException({
+                message: `${email} is already use`,
+                code: Status.ALREADY_EXISTS,
+              });
+            case data.username === username:
+              throw new RpcException({
+                message: `${username} is already use`,
+                code: Status.ALREADY_EXISTS,
+              });
+            case data.phoneNumber === phoneNumber:
+              throw new RpcException({
+                message: `${phoneNumber} is already use`,
+                code: Status.ALREADY_EXISTS,
+              });
+            default:
+              break;
+          }
 
       const user = await this.userService.createOne(
         {
@@ -64,6 +73,7 @@ export class UserController extends BaseController {
           username: global.replaceSpecialChar(username),
           email,
           password,
+          phoneNumber,
         },
         { transaction },
       );

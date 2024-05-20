@@ -53,6 +53,7 @@ message RegisterInput {
   string password = 4;
   string role = 5;
   string confirmPassword = 6;
+  string phoneNumber = 7;
 }
 
 message ChangeProfileInput {

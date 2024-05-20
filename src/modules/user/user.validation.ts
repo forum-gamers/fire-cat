@@ -35,6 +35,7 @@ export class UserValidation extends BaseValidation {
             .optional()
             .nullable()
             .default(null),
+          phoneNumber: yup.string().required('phoneNumber is required'),
         })
         .test(
           'is same',
