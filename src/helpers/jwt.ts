@@ -36,7 +36,11 @@ class Jwt {
   }
 
   public createToken(data: TokenValue, opts?: SignOptions) {
-    return sign(data, process.env.SECRET, opts);
+    return sign(
+      { ...data, accountType: data.accountType ?? '' },
+      process.env.SECRET,
+      opts,
+    );
   }
 }
 
