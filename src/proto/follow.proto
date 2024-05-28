@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package follow;
+
+message Follow {
+  int64 id = 1;
+  string followingId = 2;
+  string followerId = 3;
+  string createdAt = 4;
+  string updatedAt = 5;
+}
+
+message UserIdInput {
+  string id = 1;
+}
+
+message Pagination {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message FollowDatas {
+  repeated Follow datas = 1;
+}
+
+service FollowService {
+  rpc FollowUser(UserIdInput) returns (Follow) {}
+  rpc GetMyFollow(Pagination) returns (FollowDatas) {}
+  rpc GetMyFollower(Pagination) returns (FollowDatas) {}
+}

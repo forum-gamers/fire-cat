@@ -62,4 +62,9 @@ export abstract class BaseValidation {
     url: yup.string().required('url is required'),
     fileId: yup.string().required('fileId is required'),
   };
+
+  protected basePagination = {
+    page: yup.number().default(1).optional(),
+    limit: yup.number().default(10).optional(),
+  };
 }

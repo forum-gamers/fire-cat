@@ -12,6 +12,7 @@ import { CoachModule } from './modules/coach/coach.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { VendorModule } from './modules/vendor/vendor.module';
 import { Vendor } from './models/vendor';
+import { FollowModule } from './modules/follow/follow.module';
 const config = require('../config/config.json');
 const environment = process.env.NODE_ENV ?? 'development';
 
@@ -50,6 +51,7 @@ const environment = process.env.NODE_ENV ?? 'development';
         },
       },
     }),
+    FollowModule,
   ],
 })
 export class AppModule {}
